@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"     # HTTP
+      - "443:443"   # HTTPS
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf  # Nginx configuration file
+      - ./certbot/conf:/etc/letsencrypt      # SSL certificates
+      - ./certbot/www:/var/www/certbot       # ACME challenge files for SSL validation
+    depends_on:
+      - node-backend
+      - portfolio-frontend
+    networks:
+      - app-network
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    entrypoint: >
+      sh -c "certbot certonly --webroot -w /var/www/certbot
+      --email sameerpathania23@gmail.com
+      --agree-tos --no-eff-email
+      --force-renewal
+      -d sameer.one -d www.sameer.one &&
+      nginx -s reload"
+
+  portfolio-backend:
+    image: ghcr.io/your-org/portfolio-backend:latest
+    container_name: portfolio-backend
+    restart: always
+    networks:
+      - app-network
+
+  portfolio-frontend:
+    image: ghcr.io/your-org/portfolio-frontend:latest
+    container_name: portfolio-frontend
+    restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
