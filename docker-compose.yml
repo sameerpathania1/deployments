@@ -33,14 +33,14 @@ services:
       nginx -s reload"
 
   portfolio-backend:
-    image: ghcr.io/your-org/portfolio-backend:latest
+    image: ghcr.io/sameerpathania1/portfolio-backend:latest
     container_name: portfolio-backend
     restart: always
     networks:
       - app-network
 
   portfolio-frontend:
-    image: ghcr.io/your-org/portfolio-frontend:latest
+    image: ghcr.io/sameerpathania1/portfolio-frontend:latest
     container_name: portfolio-frontend
     restart: always
     networks:
