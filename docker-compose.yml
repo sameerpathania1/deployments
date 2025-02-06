@@ -1,18 +1,21 @@
 version: '3.8'
 
 services:
-  portfolio-backend:
-    image: ghcr.io/sameerpathania1/portfolio-backend:latest
-    container_name: portfolio-backend
-    expose:
-      - "3000"
-    environment:
-      - NODE_ENV=production
 
   portfolio-frontend:
     image: ghcr.io/sameerpathania1/portfolio-frontend:latest
     container_name: portfolio-frontend
+    restart: always
     expose:
-      - "80"
+      - "3000"
     depends_on:
       - portfolio-backend
+
+  portfolio-backend:
+    image: ghcr.io/sameerpathania1/portfolio-backend:latest
+    container_name: portfolio-backend
+    restart: always
+    expose:
+      - "3001"
+    environment:
+      - NODE_ENV=production
