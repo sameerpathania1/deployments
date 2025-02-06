@@ -10,7 +10,7 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      
+
   portfolio-backend:
     image: ghcr.io/sameerpathania1/portfolio-backend:latest
     container_name: portfolio-backend
@@ -19,3 +19,12 @@ services:
       - "3001:3001"
     environment:
       - NODE_ENV=production
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx_proxy
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
